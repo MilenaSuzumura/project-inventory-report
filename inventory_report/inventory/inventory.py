@@ -1,5 +1,6 @@
 import csv
 import json
+from xml.etree.ElementTree import ElementTree
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 
@@ -14,7 +15,7 @@ class Inventory:
             return JsonImporter.import_data(path, relatorio)
 
         if path.endswith('.xml') == 1:
-            return False
+            return XmlImporter.import_data(path, relatorio)
 
 
 class CsvImporter:
@@ -58,4 +59,56 @@ class JsonImporter:
 class XmlImporter:
     @staticmethod
     def import_data(path, relatorio):
-        return False
+        if relatorio == 'simples':
+            xmlFile = open(path, 'r')
+            tree = ElementTree()
+            reader = tree.parse(xmlFile)
+            array = list()
+            for info in reader:
+                id = info.find("id").text
+                nome_do_produto = info.find("nome_do_produto").text
+                nome_da_empresa = info.find("nome_da_empresa").text
+                data_de_fabricacao = info.find("data_de_fabricacao").text
+                data_de_validade = info.find("data_de_validade").text
+                numero_de_serie = info.find("numero_de_serie").text
+                instrucoes_de_armazenamento = info.find(
+                    "instrucoes_de_armazenamento"
+                ).text
+                array.append({
+                    "id": id,
+                    "nome_do_produto": nome_do_produto,
+                    "nome_da_empresa": nome_da_empresa,
+                    "data_de_fabricacao": data_de_fabricacao,
+                    "data_de_validade": data_de_validade,
+                    "numero_de_serie": numero_de_serie,
+                    "instrucoes_de_armazenamento": instrucoes_de_armazenamento,
+                })
+            simple = SimpleReport.generate(array)
+            return simple
+
+        if relatorio == 'completo':
+            xmlFile = open(path, 'r')
+            tree = ElementTree()
+            reader = tree.parse(xmlFile)
+            array = list()
+            for info in reader:
+                id = info.find("id").text
+                nome_do_produto = info.find("nome_do_produto").text
+                nome_da_empresa = info.find("nome_da_empresa").text
+                data_de_fabricacao = info.find("data_de_fabricacao").text
+                data_de_validade = info.find("data_de_validade").text
+                numero_de_serie = info.find("numero_de_serie").text
+                instrucoes_de_armazenamento = info.find(
+                    "instrucoes_de_armazenamento"
+                ).text
+                array.append({
+                    "id": id,
+                    "nome_do_produto": nome_do_produto,
+                    "nome_da_empresa": nome_da_empresa,
+                    "data_de_fabricacao": data_de_fabricacao,
+                    "data_de_validade": data_de_validade,
+                    "numero_de_serie": numero_de_serie,
+                    "instrucoes_de_armazenamento": instrucoes_de_armazenamento,
+                })
+            complet = CompleteReport.generate(array)
+            return complet
