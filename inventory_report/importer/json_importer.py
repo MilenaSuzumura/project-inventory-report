@@ -1,8 +1,8 @@
 import json
-from inventory_report.importer.importer import importer
+from inventory_report.importer.importer import Importer
 
 
-class JsonImporter(importer):
+class JsonImporter(Importer):
     @classmethod
     def import_data(cls, path):
         try:
@@ -10,4 +10,4 @@ class JsonImporter(importer):
             reader = json.load(jsonFile)
             return reader
         except ValueError:
-            raise ValueError
+            raise 'Arquivo inválido'

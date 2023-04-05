@@ -1,8 +1,8 @@
 import csv
-from inventory_report.importer.importer import importer
+from inventory_report.importer.importer import Importer
 
 
-class CsvImporter(importer):
+class CsvImporter(Importer):
     @classmethod
     def import_data(cls, path):
         try:
@@ -13,4 +13,4 @@ class CsvImporter(importer):
                 array.append(info)
             return array
         except ValueError:
-            raise ValueError
+            raise 'Arquivo inválido'

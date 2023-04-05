@@ -1,8 +1,8 @@
 from xml.etree.ElementTree import ElementTree
-from inventory_report.importer.importer import importer
+from inventory_report.importer.importer import Importer
 
 
-class XmlImporter(importer):
+class XmlImporter(Importer):
     @classmethod
     def import_data(cls, path):
         try:
@@ -31,4 +31,4 @@ class XmlImporter(importer):
                 })
             return array
         except ValueError:
-            raise ValueError
+            raise 'Arquivo inválido'
