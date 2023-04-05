@@ -1,4 +1,5 @@
 import csv
+import json
 from inventory_report.reports.simple_report import SimpleReport
 from inventory_report.reports.complete_report import CompleteReport
 
@@ -10,7 +11,7 @@ class Inventory:
             return CsvImporter.import_data(path, relatorio)
 
         if path.endswith('.json') == 1:
-            return False
+            return JsonImporter.import_data(path, relatorio)
 
         if path.endswith('.xml') == 1:
             return False
@@ -41,7 +42,17 @@ class CsvImporter:
 class JsonImporter:
     @staticmethod
     def import_data(path, relatorio):
-        return False
+        if relatorio == 'simples':
+            jsonFile = open(path, 'r')
+            reader = json.load(jsonFile)
+            simple = SimpleReport.generate(reader)
+            return simple
+
+        if relatorio == 'completo':
+            jsonFile = open(path, 'r')
+            reader = json.load(jsonFile)
+            complet = CompleteReport.generate(reader)
+            return complet
 
 
 class XmlImporter:
