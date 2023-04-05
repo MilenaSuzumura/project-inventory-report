@@ -10,4 +10,4 @@ class JsonImporter(Importer):
             reader = json.load(jsonFile)
             return reader
         except ValueError:
-            raise 'Arquivo inválido'
+            raise ValueError("Arquivo inválido")

@@ -6,6 +6,8 @@ class CsvImporter(Importer):
     @classmethod
     def import_data(cls, path):
         try:
+            if path.endswith('.csv') != 1:
+                raise ValueError("Arquivo inválido")
             csvfile = open(path, 'r')
             reader = csv.DictReader(csvfile)
             array = list()
@@ -13,4 +15,4 @@ class CsvImporter(Importer):
                 array.append(info)
             return array
         except ValueError:
-            raise 'Arquivo inválido'
+            raise ValueError("Arquivo inválido")

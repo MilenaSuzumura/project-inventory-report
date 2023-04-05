@@ -1,4 +1,4 @@
-from xml.etree.ElementTree import ElementTree
+from xml.etree import ElementTree
 from inventory_report.importer.importer import Importer
 
 
@@ -6,8 +6,10 @@ class XmlImporter(Importer):
     @classmethod
     def import_data(cls, path):
         try:
+            if path.endswith('.xml') != 1:
+                raise ValueError("Arquivo inválido")
             xmlFile = open(path, 'r')
-            tree = ElementTree()
+            tree = ElementTree.ElementTree()
             reader = tree.parse(xmlFile)
             array = list()
             for info in reader:
@@ -31,4 +33,4 @@ class XmlImporter(Importer):
                 })
             return array
         except ValueError:
-            raise 'Arquivo inválido'
+            raise ValueError("Arquivo inválido")
